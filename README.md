@@ -1,2 +1,2 @@
 # chat
-A PHP based chat with WebSockets
+A PHP based chat with WebSocket implementation
