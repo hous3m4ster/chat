@@ -3,7 +3,7 @@ define('HOST_NAME',"127.0.0.1");
 define('PORT',"8090");
 $null = NULL;
 
-require_once("class.chathandler.php");
+require_once("chathandler.class.php");
 $chatHandler = new ChatHandler();
 
 $socketResource = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
@@ -24,7 +24,7 @@ while (true) {
 		$chatHandler->doHandshake($header, $newSocket, HOST_NAME, PORT);
 		
 		socket_getpeername($newSocket, $client_ip_address);
-		$connectionACK = $chatHandler->newConnectionACK($client_ip_address);
+		$connectionACK = $chatHandler->newConnectionACK();
 		
 		$chatHandler->send($connectionACK);
 		
@@ -45,7 +45,7 @@ while (true) {
 		$socketData = @socket_read($newSocketArrayResource, 1024, PHP_NORMAL_READ);
 		if ($socketData === false) { 
 			socket_getpeername($newSocketArrayResource, $client_ip_address);
-			$connectionACK = $chatHandler->connectionDisconnectACK($client_ip_address);
+			$connectionACK = $chatHandler->connectionDisconnectACK($chat_user);
 			$chatHandler->send($connectionACK);
 			$newSocketIndex = array_search($newSocketArrayResource, $clientSocketArray);
 			unset($clientSocketArray[$newSocketIndex]);			
